@@ -182,6 +182,6 @@ If you encounter any issues or have questions:
 
 ---
 
-Made with ❤️ by [@N3uralCreativity](https://github.com/yourusername)
+Made with ❤️ by [@N3uralCreativity](https://github.com/N3uralCreativity)
 
 ⭐ Star this repo if you find it helpful!
