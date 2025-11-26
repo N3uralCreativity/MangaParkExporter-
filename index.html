@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaPark to MAL Exporter - Export Your Manga Collection</title>
+    <meta name="description" content="A powerful desktop application to export your MangaPark follows to MyAnimeList with automatic MAL ID enrichment">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --dark-lighter: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            text-align: center;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+        }
+
+        /* Features Section */
+        .section {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease 0.2s;
+        }
+
+        .section-subtitle.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--dark-light);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--dark-lighter);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .feature-card:nth-child(2) .feature-icon { animation-delay: 0.5s; }
+        .feature-card:nth-child(3) .feature-icon { animation-delay: 1s; }
+        .feature-card:nth-child(4) .feature-icon { animation-delay: 1.5s; }
+        .feature-card:nth-child(5) .feature-icon { animation-delay: 2s; }
+        .feature-card:nth-child(6) .feature-icon { animation-delay: 2.5s; }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* How It Works */
+        .steps-container {
+            display: grid;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease;
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .step:nth-child(even) {
+            transform: translateX(50px);
+        }
+
+        .step:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .step-content {
+            background: var(--dark-light);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--dark-lighter);
+        }
+
+        .step-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark-light);
+            border-radius: 16px;
+            border: 1px solid var(--dark-lighter);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s ease;
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: var(--dark-light);
+            border-radius: 30px;
+            padding: 4rem;
+            text-align: center;
+            border: 1px solid var(--dark-lighter);
+            margin-top: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .download-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .download-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-section .version {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .download-options {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .download-card {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--dark-lighter);
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .download-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .download-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-card .size {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--dark-lighter);
+            margin: 2rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Fira Code', monospace;
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .code-block .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .code-block .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-light);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--dark-lighter);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1rem 2rem;
+            }
+
+            .section {
+                padding: 4rem 1rem;
+            }
+
+            .step {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .step-number {
+                margin: 0 auto;
+            }
+
+            .download-section {
+                padding: 2rem;
+            }
+
+            .download-options {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s ease;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                📚 MangaPark Exporter
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Export Your MangaPark Collection to MyAnimeList</h1>
+            <p class="subtitle">
+                A powerful desktop application with automatic MAL ID enrichment, 
+                beautiful HTML visualization, and seamless XML export
+            </p>
+            <div class="cta-buttons">
+                <a href="#download" class="btn btn-primary">
+                    ⬇️ Download v1.0.0
+                </a>
+                <a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank" class="btn btn-secondary">
+                    ⭐ View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <h2 class="section-title fade-in">✨ Powerful Features</h2>
+        <p class="section-subtitle fade-in">Everything you need to manage your manga collection</p>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔍</div>
+                <h3>Dual Scraping Modes</h3>
+                <p>
+                    <strong>Authenticated:</strong> Export your personal follows list with cookies<br>
+                    <strong>Public:</strong> Scrape trending/popular manga without login
+                </p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔗</div>
+                <h3>MAL ID Enrichment</h3>
+                <p>
+                    Automatically finds MAL IDs using Jikan API v4 with smart fuzzy matching 
+                    and confidence scoring
+                </p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">📄</div>
+                <h3>Multiple Export Formats</h3>
+                <p>
+                    Generate MAL-compatible XML for direct import and beautiful HTML pages 
+                    with search & filters
+                </p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🎨</div>
+                <h3>Modern GUI</h3>
+                <p>
+                    Visual progress indicators, real-time statistics, color-coded logging, 
+                    and intuitive interface
+                </p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🍪</div>
+                <h3>Easy Cookie Management</h3>
+                <p>
+                    Manual cookie entry with step-by-step DevTools tutorial for 
+                    authenticated scraping
+                </p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">⚡</div>
+                <h3>Smart Automation</h3>
+                <p>
+                    Handles JavaScript-heavy pages with intelligent wait logic and 
+                    retry mechanisms (30-80s per page)
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section">
+        <h2 class="section-title fade-in">🚀 How It Works</h2>
+        <p class="section-subtitle fade-in">Get started in 4 simple steps</p>
+
+        <div class="steps-container">
+            <div class="step slide-in-left">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Download & Launch</h3>
+                    <p>
+                        Download the standalone .exe (no Python required) or run from source. 
+                        The application launches in fullscreen with an intuitive GUI.
+                    </p>
+                </div>
+            </div>
+
+            <div class="step slide-in-right">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Choose Mode & Configure</h3>
+                    <p>
+                        Select <strong>Authenticated</strong> mode (with MangaPark cookies) or 
+                        <strong>Public</strong> mode (no login). Follow the tutorial to extract 
+                        cookies from DevTools if needed.
+                    </p>
+                </div>
+            </div>
+
+            <div class="step slide-in-left">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Start Export Process</h3>
+                    <p>
+                        Click "Start Export" and watch real-time progress. The app scrapes 
+                        MangaPark, enriches with MAL IDs using Jikan API, and shows detailed logs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="step slide-in-right">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>View & Import Results</h3>
+                    <p>
+                        Open the generated HTML to browse your collection or import the XML 
+                        file directly to MyAnimeList. All files saved in <code>output/</code> folder.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section">
+        <h2 class="section-title fade-in">📊 Performance Stats</h2>
+        <p class="section-subtitle fade-in">Built for speed and reliability</p>
+
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <div class="stat-number">85-95%</div>
+                <div class="stat-label">MAL ID Match Rate</div>
+            </div>
+
+            <div class="stat-card fade-in">
+                <div class="stat-number">1/sec</div>
+                <div class="stat-label">API Rate Limit</div>
+            </div>
+
+            <div class="stat-card fade-in">
+                <div class="stat-number">30-80</div>
+                <div class="stat-label">Manga Per Page</div>
+            </div>
+
+            <div class="stat-card fade-in">
+                <div class="stat-number">20.9 MB</div>
+                <div class="stat-label">Executable Size</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="section">
+        <div class="download-section fade-in">
+            <h2>📥 Download MangaPark Exporter</h2>
+            <span class="version">Version 1.0.1 - November 26, 2025</span>
+
+            <div class="download-options">
+                <div class="download-card">
+                    <h3>💻 Windows Executable</h3>
+                    <p class="size">20.9 MB • Standalone</p>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        No Python installation required. Just download and run!
+                    </p>
+                    <a href="https://github.com/N3uralCreativity/MangaParkExporter-/releases/latest/download/MangaPark-to-MAL-Exporter.exe" 
+                       class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Download .exe
+                    </a>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                        ✅ Windows 10/11<br>
+                        ✅ Chrome/Edge required
+                    </p>
+                </div>
+
+                <div class="download-card">
+                    <h3>🐍 Run from Source</h3>
+                    <p class="size">Python 3.8+ Required</p>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        For developers or Linux/Mac users
+                    </p>
+                    <div class="code-block" style="text-align: left;">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <code>git clone https://github.com/N3uralCreativity/MangaParkExporter-.git
+cd MangaParkExporter-
+pip install -r requirements.txt
+python mangapark_gui.py</code>
+                    </div>
+                    <a href="https://github.com/N3uralCreativity/MangaParkExporter-" 
+                       target="_blank" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; padding: 2rem; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                <h3 style="color: var(--error); margin-bottom: 1rem;">⚠️ Important Notes</h3>
+                <ul style="text-align: left; max-width: 600px; margin: 0 auto; color: var(--text-muted);">
+                    <li>Auto-fetch cookies feature disabled in .exe for stability</li>
+                    <li>Use manual DevTools method to extract cookies (100% reliable)</li>
+                    <li>Scraping takes 30-80 seconds per page due to JavaScript rendering</li>
+                    <li>Chrome or Edge browser must be installed</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank">GitHub</a>
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-/issues" target="_blank">Report Issue</a>
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-/blob/main/LICENSE" target="_blank">License</a>
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-#readme" target="_blank">Documentation</a>
+        </div>
+        <p class="copyright">
+            © 2025 MangaPark to MAL Exporter • Made with ❤️ by N3uralCreativity • MIT License
+        </p>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .feature-card, .step, .stat-card, .download-section, .section-title, .section-subtitle').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Copy code function
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = '✓ Copied!';
+                button.style.background = 'rgba(16, 185, 129, 0.3)';
+                
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                    button.style.background = 'rgba(255, 255, 255, 0.1)';
+                }, 2000);
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add stagger animation delay to feature cards
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        // Add stagger animation delay to stat cards
+        document.querySelectorAll('.stat-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

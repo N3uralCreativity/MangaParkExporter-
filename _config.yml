@@ -1,0 +1,12 @@
+# GitHub Pages Configuration
+# This file ensures the site is built correctly
+
+# Jekyll theme (using none for custom HTML)
+theme: null
+
+# Include index.html
+include:
+  - index.html
+
+# No Jekyll processing needed
+markdown: kramdown
