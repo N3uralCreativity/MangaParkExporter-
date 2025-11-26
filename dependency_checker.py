@@ -207,6 +207,10 @@ def check_dependencies():
     missing = []
     
     for pkg_name in REQUIRED_PACKAGES.keys():
+        # Skip browser_cookie3 - it's optional and causes issues in .exe
+        if pkg_name == 'browser_cookie3':
+            continue
+            
         try:
             __import__(pkg_name)
         except ImportError:

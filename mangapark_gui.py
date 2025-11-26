@@ -29,6 +29,14 @@ import xml.etree.ElementTree as ET
 import time
 from difflib import SequenceMatcher
 
+# Optional import for browser cookie fetching
+try:
+    import browser_cookie3
+    BROWSER_COOKIE3_AVAILABLE = True
+except (ImportError, Exception) as e:
+    BROWSER_COOKIE3_AVAILABLE = False
+    print(f"Warning: browser_cookie3 not available: {e}")
+
 try:
     from selenium import webdriver
     from selenium.webdriver.common.by import By
@@ -536,6 +544,19 @@ class MangaParkExporterGUI:
         self.root.wait_window(warning_dialog)
         
         if not result["proceed"]:
+            return
+        
+        # Check if browser_cookie3 is available
+        if not BROWSER_COOKIE3_AVAILABLE:
+            messagebox.showerror(
+                "Feature Not Available",
+                "Auto-fetch cookies is not available in this version.\n\n"
+                "The .exe version has this feature disabled due to Windows security restrictions.\n\n"
+                "Please use the manual cookie entry method:\n"
+                "1. Click the '?' button for tutorial\n"
+                "2. Copy cookies from Chrome DevTools\n"
+                "3. Paste them in the fields below"
+            )
             return
         
         # User confirmed, proceed with auto-fetch

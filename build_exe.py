@@ -47,17 +47,19 @@ def build_exe():
     print("=" * 60)
     
     # PyInstaller command
+    # Note: browser_cookie3 excluded due to Windows permission issues in .exe
     cmd = [
         sys.executable, "-m", "PyInstaller",
         "--onefile",
         "--windowed",
         "--name", "MangaPark-to-MAL-Exporter",
         "--add-data", "requirements.txt;.",
-        "--hidden-import", "browser_cookie3",
         "--hidden-import", "selenium",
         "--hidden-import", "bs4",
         "--hidden-import", "requests",
-        "--collect-all", "browser_cookie3",
+        "--exclude-module", "browser_cookie3",
+        "--exclude-module", "shadowcopy",
+        "--exclude-module", "wmi",
         "--noconfirm",
         "mangapark_gui.py"
     ]
