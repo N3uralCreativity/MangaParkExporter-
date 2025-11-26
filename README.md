@@ -142,16 +142,6 @@ The resulting `.exe` can be distributed to anyone without requiring Python insta
 - **Chrome or Edge browser** must be installed (Selenium uses it)
 - **Windows 10/11** (for .exe version)
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
