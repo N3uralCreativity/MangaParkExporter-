@@ -20,7 +20,7 @@ except ImportError:
 # --------- CONFIG ---------
 BASE_URL = "https://mangapark.io"  # or .org if you use that
 COOKIE_HEADER = r"""
-skey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI2OTIyMzdjZWIyYTQxMmI5OWM1MGM0YjUiLCJpYXQiOjE3NjQxODQ2NjAsImV4cCI6MTc2Njc3NjY2MH0.xL7vmnOtq_dTmXouOQl22PDF6igqPDWCsNzQKDKGBio; tfv=1763850143381; theme=coffee; wd=876x932
+Your Cookies Here
 """.strip()
 
 # Optional: put your MAL username here (only used in <myinfo>, not for login)

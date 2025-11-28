@@ -6,6 +6,10 @@ A powerful desktop application to export your MangaPark follows to MyAnimeList (
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![License](https://img.shields.io/badge/license-MIT-orange)
 
+## Revamp Sneak-peek
+![Revamp](https://raw.githubusercontent.com/N3uralCreativity/MangaParkExporter-/b7879a01dbf77791c449c72a97d7568ff7734ac2/Img/Screenshot%202025-11-27%20232828.png)
+
+
 ## ✨ Features
 
 - 🔍 **Dual Scraping Modes**
@@ -172,6 +176,6 @@ If you encounter any issues or have questions:
 
 ---
 
-Made with ❤️ by [@N3uralCreativity](https://github.com/N3uralCreativity)
+Made with by [@N3uralCreativity](https://github.com/N3uralCreativity)
 
 ⭐ Star this repo if you find it helpful!
