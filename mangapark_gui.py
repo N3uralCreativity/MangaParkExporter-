@@ -1418,11 +1418,17 @@ class MangaParkExporterGUI:
                     print(f"[DEBUG] Loaded URL: {url}")
                     
                     try:
-                        # Wait longer for the page to fully load
-                        self.log("  ⏳ Waiting for page to load (30 seconds)...", "#667eea")
-                        self.log("[DEBUG] Waiting for page to fully load (30 seconds)...")
-                        print("[DEBUG] Waiting for page to fully load (30 seconds)...")
-                        time.sleep(30)  # Give plenty of time for JS to execute
+                        # Attente dynamique : spinner ou manga cards
+                        self.log("  ⏳ Waiting for page to load (max 30s)...", "#667eea")
+                        self.log("[DEBUG] Waiting for page to fully load (max 30s)...")
+                        print("[DEBUG] Waiting for page to fully load (max 30s)...")
+                        try:
+                            WebDriverWait(driver, 30).until(
+                                lambda d: d.find_elements(By.CSS_SELECTOR, "a[href*='/title/']") or not d.find_elements(By.CLASS_NAME, "loading-spinner")
+                            )
+                        except Exception as e:
+                            self.log(f"[DEBUG] Timeout or error during wait: {e}")
+                            print(f"[DEBUG] Timeout or error during wait: {e}")
                         
                         self.log("[DEBUG] Checking for loading spinner...")
                         print("[DEBUG] Checking for loading spinner...")
@@ -1456,10 +1462,16 @@ class MangaParkExporterGUI:
                         print(f"[DEBUG] Found {len(links_check)} potential manga links after waiting")
                         
                         if len(links_check) == 0:
-                            self.log("  ⏳ Content still loading, waiting 30 more seconds...", "#667eea")
-                            self.log("[DEBUG] Still no manga cards found, waiting 30 more seconds...")
-                            print("[DEBUG] Still no manga cards found, waiting 30 more seconds...")
-                            time.sleep(30)
+                            self.log("  ⏳ Content still loading, waiting up to 30s for manga cards...", "#667eea")
+                            self.log("[DEBUG] Still no manga cards found, waiting up to 30s...")
+                            print("[DEBUG] Still no manga cards found, waiting up to 30s...")
+                            try:
+                                WebDriverWait(driver, 30).until(
+                                    lambda d: d.find_elements(By.CSS_SELECTOR, "a[href*='/title/']")
+                                )
+                            except Exception as e:
+                                self.log(f"[DEBUG] Timeout or error during wait for manga cards: {e}")
+                                print(f"[DEBUG] Timeout or error during wait for manga cards: {e}")
                     except Exception as e:
                         self.log(f"[DEBUG] Exception during wait: {e}")
                         print(f"[DEBUG] Exception during wait: {e}")

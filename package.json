@@ -1,0 +1,37 @@
+{
+  "name": "manga-exporter",
+  "version": "2.0.0",
+  "description": "Multi-Site Manga Exporter Desktop App",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dev": "electron . --dev"
+  },
+  "keywords": ["manga", "exporter", "mal", "mangapark"],
+  "author": "N3uralCreativity",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "build": {
+    "appId": "com.mangaexporter.app",
+    "productName": "Manga Exporter",
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "files": [
+      "electron-main.js",
+      "mangapark_gui_web.html",
+      "backend_export.py",
+      "app_server.py",
+      "**/*.py"
+    ]
+  }
+}
