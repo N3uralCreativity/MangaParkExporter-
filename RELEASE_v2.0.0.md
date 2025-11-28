@@ -1,11 +1,11 @@
-# 🚀 MangaPark Exporter V3.0.0 - Complete Rewrite
+# 🚀 MangaPark Exporter V2.0.0 - Complete Rewrite
 
 ## 📋 Release Information
 
-**Version:** 3.0.0  
+**Version:** 2.0.0  
 **Release Date:** November 28, 2025  
 **Type:** Major Release  
-**Download:** [MangaPark-Exporter-V3.exe](https://github.com/N3uralCreativity/MangaParkExporter-/releases/tag/v3.0.0)
+**Download:** [MangaPark-Exporter-V3.exe](https://github.com/N3uralCreativity/MangaParkExporter-/releases/tag/v2.0.0)
 
 ---
 
@@ -88,12 +88,9 @@ This is a **complete rewrite** of the MangaPark Exporter with a modern, professi
 ## 🎨 New Features in Detail
 
 ### Theme System
-Choose from 5 beautiful themes:
+Choose from 2 beautiful themes:
 - 🌙 **Dark** - Easy on the eyes, perfect for night use (default)
 - ☀️ **Light** - Clean and bright for daytime use
-- 🔵 **Blue** - Professional blue palette
-- 💜 **Purple** - Modern purple aesthetic
-- 🟢 **Green** - Calm green environment
 
 ### Font Size Control
 - **Small** - Compact view for more content
@@ -159,7 +156,7 @@ output/
 
 ---
 
-## 🆕 Changes from V2.0.0
+## 🆕 Changes from V1.0.0
 
 ### User Interface
 - ✅ Complete UI redesign with modern aesthetics
@@ -169,7 +166,7 @@ output/
 - ✅ Interactive dashboard with statistics
 
 ### Settings & Customization
-- ✅ 5 theme options (was 1)
+- ✅ 2 theme options (Dark & Light)
 - ✅ Font size adjustment (was fixed)
 - ✅ Animation speed control (new feature)
 - ✅ Multiple export format options (was XML only)
@@ -291,10 +288,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Repository:** https://github.com/N3uralCreativity/MangaParkExporter-
 - **Download:** [Latest Release](https://github.com/N3uralCreativity/MangaParkExporter-/releases)
 - **Documentation:** [README.md](README.md)
-- **Changelog:** [RELEASE_v3.0.0.md](RELEASE_v3.0.0.md)
+- **Changelog:** [RELEASE_v2.0.0.md](RELEASE_v2.0.0.md)
 
 ---
 
-**Thank you for using MangaPark Exporter V3! 🎉**
+**Thank you for using MangaPark Exporter V2! 🎉**
 
 *Made with ❤️ by N3uralCreativity*
