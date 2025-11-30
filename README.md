@@ -128,7 +128,7 @@ Everything goes into the `output/` folder:
 - **selenium** – drives a browser to load the manga site
 - **beautifulsoup4** – parses the HTML
 - **requests** – calls the Jikan API
-- **browser-cookie3** – grabs cookies from Chrome
+- **browser-cookie3** – grabs cookies from Chrome (or so its supposed to but wtv)
 - **tkinter** – provides the GUI
 
 Flow:
