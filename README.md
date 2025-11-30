@@ -1,177 +1,178 @@
 # 📚 MangaPark to MAL Exporter
 
-A powerful desktop application to export your MangaPark follows to MyAnimeList (MAL) with automatic MAL ID enrichment and beautiful HTML visualization.
+A small tool to rescue your manga data when a site goes down or you just want to move elsewhere.
+
+You read your manga on a site (like MangaPark), you have a list of favorites and chapters read, and you don’t want to lose that.  
+This app exports your follows + reading progress to **MyAnimeList** or to local files you can reuse later.
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![License](https://img.shields.io/badge/license-MIT-orange)
 
-## ✨ Features
+---
 
-- 🔍 **Dual Scraping Modes**
-  - 🔒 Authenticated: Export your personal follows list (requires cookies)
-  - 🌐 Public: Scrape trending/popular manga (no login needed)
+## ✨ What it does
 
-- 🔗 **MAL ID Enrichment**
-  - Automatically finds MAL IDs using the Jikan API
-  - Smart title matching with confidence scoring
-  - Real-time progress tracking
+- 🧾 **Exports your data**
+  - Favorites / follows
+  - Chapters read count
+  - From a manga site → to MAL or to files
 
-- 📄 **Export Formats**
-  - MAL-compatible XML for direct import
-  - Beautiful HTML page with search & filters
+- 🔍 **Two ways to grab your list**
+  - **Authenticated mode**: uses your cookies to read *your* personal follows
+  - **Public mode**: scrapes public lists like trending/popular (no login needed)
 
-- 🎨 **Modern GUI**
-  - Visual progress indicators
-  - Real-time statistics
-  - Colored logging console
-  - Auto-fetch cookies from Chrome
+- 🔗 **MAL integration**
+  - Looks up MAL IDs via the Jikan API
+  - Fuzzy matching and basic confidence handling
 
-## 🚀 Quick Start
+- 📄 **Exports to**
+  - **MAL XML** – import directly into MyAnimeList
+  - **HTML** – a simple, searchable page of your library
 
-### Option 1: Run from Source
+- 🖥️ **Simple GUI**
+  - Buttons for modes and export
+  - Progress bar + logs
+  - Optional auto-fetch of cookies from Chrome
 
-1. **Install Python 3.8+** (if not already installed)
+---
 
-2. **Clone the repository**
+## 🚀 How to use (quick version – Windows)
+
+The easiest way is to use the ready-made **.exe** file:
+
+1. Go to the **latest release** on GitHub 👉 [Lastest Release](https://github.com/N3uralCreativity/MangaParkExporter/releases/latest)
+2. Download the `.exe` file (for example: `MangaParkExporter-X.X.X.exe`).
+3. Make sure **Chrome or Edge** is installed on your PC AND you are logged into the site you wish to export data from.
+4. Double-click the `.exe`:
+   - Choose **Authenticated** if you want to export **your own favorites & progress**.
+   - Choose **Public** if you just want a list from public/trending pages.
+5. Click **Start Export** and wait until it finishes.
+6. Open the generated **XML** (for MAL import) or **HTML** (to browse locally) in the `output/` folder.
+
+No installation, no command line required unless you want it : 
+
+```bash
+git clone https://github.com/N3uralCreativity/MangaParkExporter-.git
+cd MangaParkExporter-
+pip install -r requirements.txt
+python desktop_app_v3.py
+```
+
+---
+
+## 🧑‍💻 Getting started from source (advanced users)
+
+If you prefer running from source instead of using the .exe:
+
+### Run from source
+
+1. Install **Python 3.8+**
+2. Clone the repo:
    ```bash
    git clone https://github.com/yourusername/MangaParkExporter.git
    cd MangaParkExporter
    ```
-
-3. **Install dependencies**
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-4. **Run the application**
+4. Launch:
    ```bash
    python mangapark_gui.py
    ```
 
-### Option 2: Build Standalone .exe
-
-1. **Run the build script**
-   ```bash
-   python build_exe.py
-   ```
-
-2. **Find your .exe in the `dist/` folder**
-   - The executable is completely standalone
-   - No Python installation required for end users
-   - Only Chrome/Edge browser needed (for Selenium)
-
-## 📖 Usage Guide
-
-### Authenticated Mode (Personal Follows)
-
-1. **Select "🔒 Authenticated" mode**
-
-2. **Get your cookies** (choose one):
-   - Click "🔄 Auto-Fetch Cookies from Chrome"
-   - OR manually enter cookies:
-     - Open MangaPark in Chrome
-     - Press F12 → Application → Cookies
-     - Copy: `skey`, `tfv`, `theme`, `wd`
-
-3. **Click "▶️ Start Export"**
-
-4. **Wait for completion** (progress shown in real-time)
-
-5. **View results**:
-   - Click "🌐 Open HTML" to view in browser
-   - Click "📁 Open Folder" to access XML files
-
-### Public Mode (No Login)
-
-1. **Select "🌐 Public" mode**
-
-2. **Click "▶️ Start Export"**
-
-3. **Done!** - Scrapes trending/popular manga
-
-## 📂 Output Files
-
-All files are saved in the `output/` folder:
-
-- **mangapark_to_mal.xml** - Import this to MyAnimeList
-- **manga_list.html** - Browse your collection in the browser
-
-## 🛠️ Technical Details
-
-### Dependencies
-
-- **selenium** - Browser automation for scraping
-- **beautifulsoup4** - HTML parsing
-- **requests** - HTTP requests for Jikan API
-- **browser-cookie3** - Auto-fetch cookies from Chrome
-- **tkinter** - GUI (included with Python)
-
-### How It Works
-
-1. **Scraping**: Uses Selenium with headless Chrome to render JavaScript-heavy pages
-2. **MAL Matching**: Queries Jikan API v4 with fuzzy string matching (60% threshold)
-3. **Rate Limiting**: Respects 1 request/second limit
-4. **Export**: Generates MAL-compatible XML and responsive HTML
-
-### API Usage
-
-- **Jikan API v4** (unofficial MAL API)
-  - No authentication required
-  - Rate limit: 1 request/second
-  - Endpoint: `https://api.jikan.moe/v4/manga`
-
-## 🔧 Building the .exe
-
-The `build_exe.py` script automates everything:
+### Build a standalone `.exe` (Windows)
 
 ```bash
 python build_exe.py
 ```
 
-This will:
-1. ✅ Install all dependencies from `requirements.txt`
-2. ✅ Install PyInstaller
-3. ✅ Build a single standalone `.exe` file
-4. ✅ Include all necessary packages
-
-The resulting `.exe` can be distributed to anyone without requiring Python installation!
-
-## ⚠️ Requirements for .exe Users
-
-- **Chrome or Edge browser** must be installed (Selenium uses it)
-- **Windows 10/11** (for .exe version)
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Jikan API](https://jikan.moe/) - Unofficial MAL API
-- [MangaPark](https://mangapark.io/) - Manga reading platform
-- [MyAnimeList](https://myanimelist.net/) - Anime and manga database
-
-## ⚖️ Disclaimer
-
-This tool is for personal use only. Please respect MangaPark's and MyAnimeList's Terms of Service. Use responsibly and don't abuse the scraping functionality.
-
-## 📧 Support
-
-If you encounter any issues or have questions:
-- Open an issue on GitHub
-- Check existing issues for solutions
-
-## 🗺️ Roadmap
-
-- [ ] Support for other manga sites (MangaDex, etc.)
-- [ ] Batch processing for large lists
-- [ ] Custom MAL list categories
-- [ ] Export to other formats (CSV, JSON)
-- [ ] Dark mode toggle
+- The `.exe` will appear in `dist/`
+- No Python needed for end users  
+- Requires Chrome/Edge installed (for Selenium)
 
 ---
 
-Made with by [@N3uralCreativity](https://github.com/N3uralCreativity)
+## 📖 Basic usage (in the app)
 
-⭐ Star this repo if you find it helpful!
+### Authenticated mode (your own follows & progress)
+
+1. Choose **🔒 Authenticated** in the app.  
+2. Let the app **auto-fetch cookies** from Chrome  
+   - or paste your cookies manually if you prefer.  
+3. Click **▶️ Start Export**.  
+4. When it finishes, open:
+   - The **XML** file (for MAL import).
+   - The **HTML** file (to browse your list locally).
+
+### Public mode (no account needed)
+
+1. Choose **🌐 Public**.  
+2. Click **▶️ Start Export**.  
+3. It scrapes public lists (e.g. trending/popular) and exports them the same way.
+
+---
+
+## 📂 Output
+
+Everything goes into the `output/` folder:
+
+- `mangapark_to_mal.xml` – MAL-compatible export  
+- `manga_list.html` – searchable manga list in your browser  
+
+---
+
+## 🛠️ Under the hood (short version)
+
+- **selenium** – drives a browser to load the manga site
+- **beautifulsoup4** – parses the HTML
+- **requests** – calls the Jikan API
+- **browser-cookie3** – grabs cookies from Chrome
+- **tkinter** – provides the GUI
+
+Flow:
+
+1. Scrape your follows and chapter progress from the site.  
+2. For each title, query **Jikan API v4** to find the corresponding MAL entry.  
+3. Respect basic rate limits.  
+4. Generate MAL XML + an HTML library view.
+
+---
+
+## ⚠️ Requirements (for the `.exe` version)
+
+- Windows 10/11  
+- Chrome or Edge installed  
+
+---
+
+## 📝 License
+
+This project is under the **MIT License**.  
+See the [LICENSE](LICENSE) file for details.
+
+---
+
+## ⚖️ Disclaimer
+
+This tool is meant for **personal backup & migration only**.  
+Please respect MangaPark’s and MyAnimeList’s Terms of Service and don’t abuse scraping.
+
+---
+
+## 📧 Support & roadmap
+
+- Problems or ideas? Open an issue on GitHub.
+- Planned / possible additions:
+  - Support for more manga sites (e.g. MangaDex)
+  - Extra export formats (CSV, JSON)
+  - Better handling of very large lists
+  - More options around MAL lists (custom categories, etc.)
+
+---
+
+Made by [@N3uralCreativity](https://github.com/N3uralCreativity)  
+⭐ If this saved your list, consider starring the repo!
+
+Also this was not supposed to be publily released at all so idk rn im motivated for it but that might change so don't expect too much of it though i would like to add features like importing into sites / Selecting which to import and eventually accounts whoever knows..
