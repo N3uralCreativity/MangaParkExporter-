@@ -5,7 +5,7 @@ A small tool to rescue your manga data when a site goes down or you just want to
 You read your manga on a site (like MangaPark), you have a list of favorites and chapters read, and you don’t want to lose that.  
 This app exports your follows + reading progress to **MyAnimeList** or to local files you can reuse later.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![License](https://img.shields.io/badge/license-MIT-orange)
 
