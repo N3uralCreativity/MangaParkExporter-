@@ -41,7 +41,7 @@ This app exports your follows + reading progress to **MyAnimeList** or to local 
 
 The easiest way is to use the ready-made **.exe** file:
 
-1. Go to the **latest release** on GitHub 👉 [Lastest Release](https://github.com/N3uralCreativity/MangaParkExporter/releases/latest)
+1. Go to the **latest release** on GitHub 👉 [Lastest Release](https://github.com/N3uralCreativity/MangaParkExporter-/releases/latest)
 2. Download the `.exe` file (for example: `MangaParkExporter-X.X.X.exe`).
 3. Make sure **Chrome or Edge** is installed on your PC AND you are logged into the site you wish to export data from.
 4. Double-click the `.exe`:
