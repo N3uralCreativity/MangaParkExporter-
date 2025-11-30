@@ -33,7 +33,7 @@ This app exports your follows + reading progress to **MyAnimeList** or to local 
 - 🖥️ **Simple GUI**
   - Buttons for modes and export
   - Progress bar + logs
-  - Optional auto-fetch of cookies from Chrome
+  - Optional auto-fetch of cookies from Chrome (Currently Disabled cuz its hell to maintain bruh)
 
 ---
 
