@@ -1,6 +1,7 @@
 # 📚 MangaPark to MAL Exporter
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/N3uralCreativity/MangaParkExporter-/releases)
 [![Python](https://img.shields.io/badge/python-3.11+-green)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
@@ -26,6 +27,10 @@ python src/desktop_app_v3.py
 =======
 A small tool to rescue your manga data when a site goes down or you just want to move elsewhere.
 
+=======
+A small tool to rescue your manga data when a site goes down or you just want to move elsewhere.
+
+>>>>>>> 60de69b12349fd7f8af64f863741e99474524de7
 You read your manga on a site (like MangaPark), you have a list of favorites and chapters read, and you don’t want to lose that.  
 This app exports your follows + reading progress to **MyAnimeList** or to local files you can reuse later.
 
@@ -36,6 +41,9 @@ This app exports your follows + reading progress to **MyAnimeList** or to local 
 ---
 
 ## ✨ What it does
+<<<<<<< HEAD
+>>>>>>> 60de69b12349fd7f8af64f863741e99474524de7
+=======
 >>>>>>> 60de69b12349fd7f8af64f863741e99474524de7
 
 - 🧾 **Exports your data**
@@ -43,6 +51,7 @@ This app exports your follows + reading progress to **MyAnimeList** or to local 
   - Chapters read count
   - From a manga site → to MAL or to files
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 - 🖥️ **Modern Desktop App** - PyQt6 with full-screen interface
 - 🎨 **Beautiful Themes** - Dark & Light modes
@@ -132,6 +141,31 @@ MIT License - see [LICENSE](LICENSE) for details
 
 The easiest way is to use the ready-made **.exe** file:
 
+=======
+- 🔍 **Two ways to grab your list**
+  - **Authenticated mode**: uses your cookies to read *your* personal follows
+  - **Public mode**: scrapes public lists like trending/popular (no login needed)
+
+- 🔗 **MAL integration**
+  - Looks up MAL IDs via the Jikan API
+  - Fuzzy matching and basic confidence handling
+
+- 📄 **Exports to**
+  - **MAL XML** – import directly into MyAnimeList
+  - **HTML** – a simple, searchable page of your library
+
+- 🖥️ **Simple GUI**
+  - Buttons for modes and export
+  - Progress bar + logs
+  - Optional auto-fetch of cookies from Chrome (Currently Disabled cuz its hell to maintain bruh)
+
+---
+
+## 🚀 How to use (quick version – Windows)
+
+The easiest way is to use the ready-made **.exe** file:
+
+>>>>>>> 60de69b12349fd7f8af64f863741e99474524de7
 1. Go to the **latest release** on GitHub 👉 [Lastest Release](https://github.com/N3uralCreativity/MangaParkExporter-/releases/latest)
 2. Download the `.exe` file (for example: `MangaParkExporter-X.X.X.exe`).
 3. Make sure **Chrome or Edge** is installed on your PC AND you are logged into the site you wish to export data from.
@@ -267,4 +301,7 @@ Made by [@N3uralCreativity](https://github.com/N3uralCreativity)
 ⭐ If this saved your list, consider starring the repo!
 
 Also this was not supposed to be publily released at all so idk rn im motivated for it but that might change so don't expect too much of it though i would like to add features like importing into sites / Selecting which to import and eventually accounts whoever knows..
+<<<<<<< HEAD
+>>>>>>> 60de69b12349fd7f8af64f863741e99474524de7
+=======
 >>>>>>> 60de69b12349fd7f8af64f863741e99474524de7
