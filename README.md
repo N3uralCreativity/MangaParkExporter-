@@ -1,7 +1,5 @@
 # 📚 MangaPark to MAL Exporter
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/N3uralCreativity/MangaParkExporter-/releases)
 [![Python](https://img.shields.io/badge/python-3.11+-green)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
