@@ -1,181 +1,91 @@
 # 📚 MangaPark to MAL Exporter
 
-A powerful desktop application to export your MangaPark follows to MyAnimeList (MAL) with automatic MAL ID enrichment and beautiful HTML visualization.
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/N3uralCreativity/MangaParkExporter-/releases)
+[![Python](https://img.shields.io/badge/python-3.11+-green)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Python](https://img.shields.io/badge/python-3.8+-green)
-![License](https://img.shields.io/badge/license-MIT-orange)
+Modern desktop application to export your MangaPark collection to MyAnimeList with automatic MAL ID enrichment, beautiful themes, and multiple export formats.
 
-## Revamp Sneak-peek
-![Revamp](https://raw.githubusercontent.com/N3uralCreativity/MangaParkExporter-/b7879a01dbf77791c449c72a97d7568ff7734ac2/Img/Screenshot%202025-11-27%20232828.png)
+![Screenshot](assets/screenshots/Screenshot%202025-11-27%20232828.png)
 
+## ⚡ Quick Start
+
+### Download & Run (Windows)
+1. Download [MangaPark-Exporter-V2.exe](https://github.com/N3uralCreativity/MangaParkExporter-/releases/download/v2.0.0/MangaPark-Exporter-V2.exe) (222 MB)
+2. Double-click to run (no installation needed!)
+3. Navigate to Export page and start exporting
+
+### Run from Source
+```bash
+git clone https://github.com/N3uralCreativity/MangaParkExporter-.git
+cd MangaParkExporter-
+pip install -r requirements.txt
+python src/desktop_app_v3.py
+```
 
 ## ✨ Features
 
-- 🔍 **Dual Scraping Modes**
-  - 🔒 Authenticated: Export your personal follows list (requires cookies)
-  - 🌐 Public: Scrape trending/popular manga (no login needed)
+- 🖥️ **Modern Desktop App** - PyQt6 with full-screen interface
+- 🎨 **Beautiful Themes** - Dark & Light modes
+- 📊 **Interactive Dashboard** - Real-time stats and history
+- 📄 **Multiple Formats** - XML, HTML, JSON exports
+- 🔗 **Smart Matching** - Fuzzy MAL ID detection
+- ⚙️ **Extensive Settings** - Customizable fonts, animations, and more
 
-- 🔗 **MAL ID Enrichment**
-  - Automatically finds MAL IDs using the Jikan API
-  - Smart title matching with confidence scoring
-  - Real-time progress tracking
+## 📖 Documentation
 
-- 📄 **Export Formats**
-  - MAL-compatible XML for direct import
-  - Beautiful HTML page with search & filters
+- [Full Documentation](docs/README.md) - Complete user guide
+- [Release Notes](docs/RELEASE_v2.0.0.md) - What's new in V2
+- [Website](https://n3uralcreativity.github.io/MangaParkExporter-/) - Project homepage
 
-- 🎨 **Modern GUI**
-  - Visual progress indicators
-  - Real-time statistics
-  - Colored logging console
-  - Auto-fetch cookies from Chrome
+## 🛠️ Development
 
-## 🚀 Quick Start
-
-### Option 1: Run from Source
-
-1. **Install Python 3.8+** (if not already installed)
-
-2. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/MangaParkExporter.git
-   cd MangaParkExporter
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application**
-   ```bash
-   python mangapark_gui.py
-   ```
-
-### Option 2: Build Standalone .exe
-
-1. **Run the build script**
-   ```bash
-   python build_exe.py
-   ```
-
-2. **Find your .exe in the `dist/` folder**
-   - The executable is completely standalone
-   - No Python installation required for end users
-   - Only Chrome/Edge browser needed (for Selenium)
-
-## 📖 Usage Guide
-
-### Authenticated Mode (Personal Follows)
-
-1. **Select "🔒 Authenticated" mode**
-
-2. **Get your cookies** (choose one):
-   - Click "🔄 Auto-Fetch Cookies from Chrome"
-   - OR manually enter cookies:
-     - Open MangaPark in Chrome
-     - Press F12 → Application → Cookies
-     - Copy: `skey`, `tfv`, `theme`, `wd`
-
-3. **Click "▶️ Start Export"**
-
-4. **Wait for completion** (progress shown in real-time)
-
-5. **View results**:
-   - Click "🌐 Open HTML" to view in browser
-   - Click "📁 Open Folder" to access XML files
-
-### Public Mode (No Login)
-
-1. **Select "🌐 Public" mode**
-
-2. **Click "▶️ Start Export"**
-
-3. **Done!** - Scrapes trending/popular manga
-
-## 📂 Output Files
-
-All files are saved in the `output/` folder:
-
-- **mangapark_to_mal.xml** - Import this to MyAnimeList
-- **manga_list.html** - Browse your collection in the browser
-
-## 🛠️ Technical Details
-
-### Dependencies
-
-- **selenium** - Browser automation for scraping
-- **beautifulsoup4** - HTML parsing
-- **requests** - HTTP requests for Jikan API
-- **browser-cookie3** - Auto-fetch cookies from Chrome
-- **tkinter** - GUI (included with Python)
-
-### How It Works
-
-1. **Scraping**: Uses Selenium with headless Chrome to render JavaScript-heavy pages
-2. **MAL Matching**: Queries Jikan API v4 with fuzzy string matching (60% threshold)
-3. **Rate Limiting**: Respects 1 request/second limit
-4. **Export**: Generates MAL-compatible XML and responsive HTML
-
-### API Usage
-
-- **Jikan API v4** (unofficial MAL API)
-  - No authentication required
-  - Rate limit: 1 request/second
-  - Endpoint: `https://api.jikan.moe/v4/manga`
-
-## 🔧 Building the .exe
-
-The `build_exe.py` script automates everything:
-
-```bash
-python build_exe.py
+### Project Structure
+```
+MangaParkExporter/
+├── src/                    # Source code
+│   ├── desktop_app_v3.py   # Main application
+│   └── mangapark_gui_web.html  # UI template
+├── build/                  # Build scripts
+│   └── build_exe_v3.py     # PyInstaller build
+├── docs/                   # Documentation
+├── assets/                 # Static assets
+├── legacy/                 # Old versions
+└── examples/               # Example outputs
 ```
 
-This will:
-1. ✅ Install all dependencies from `requirements.txt`
-2. ✅ Install PyInstaller
-3. ✅ Build a single standalone `.exe` file
-4. ✅ Include all necessary packages
+### Building from Source
+```bash
+cd build
+python build_exe_v3.py
+```
 
-The resulting `.exe` can be distributed to anyone without requiring Python installation!
+The executable will be in `dist/MangaPark-Exporter-V3.exe`
 
-## ⚠️ Requirements for .exe Users
+## 📋 Requirements
 
-- **Chrome or Edge browser** must be installed (Selenium uses it)
-- **Windows 10/11** (for .exe version)
+- **Python 3.11+** (for source)
+- **Google Chrome** (for web scraping)
+- **Windows 10/11** (for .exe)
+
+## 🤝 Contributing
+
+Contributions welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) for details
 
 ## 🙏 Acknowledgments
 
-- [Jikan API](https://jikan.moe/) - Unofficial MAL API
-- [MangaPark](https://mangapark.io/) - Manga reading platform
-- [MyAnimeList](https://myanimelist.net/) - Anime and manga database
-
-## ⚖️ Disclaimer
-
-This tool is for personal use only. Please respect MangaPark's and MyAnimeList's Terms of Service. Use responsibly and don't abuse the scraping functionality.
-
-## 📧 Support
-
-If you encounter any issues or have questions:
-- Open an issue on GitHub
-- Check existing issues for solutions
-
-## 🗺️ Roadmap
-
-- [ ] Support for other manga sites (MangaDex, etc.)
-- [ ] Batch processing for large lists
-- [ ] Custom MAL list categories
-- [ ] Export to other formats (CSV, JSON)
-- [ ] Dark mode toggle
+- MangaPark for the platform
+- MyAnimeList for the database
+- Python community for amazing libraries
 
 ---
 
-Made with by [@N3uralCreativity](https://github.com/N3uralCreativity)
-
-⭐ Star this repo if you find it helpful!
+**Made by [N3uralCreativity](https://github.com/N3uralCreativity)**

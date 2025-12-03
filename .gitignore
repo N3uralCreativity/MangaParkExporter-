@@ -7,9 +7,7 @@ __pycache__/
 env/
 venv/
 ENV/
-build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -23,15 +21,18 @@ wheels/
 .installed.cfg
 *.egg
 
-# PyInstaller
+# PyInstaller build artifacts
+build/
+dist/
 *.manifest
 *.spec
 
-# Output files
+# Runtime output
 output/
 *.xml
 *.html
 !index.html
+!src/*.html
 mal_id_report.txt
 debug_*.html
 
