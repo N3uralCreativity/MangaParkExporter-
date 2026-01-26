@@ -1,5 +1,7 @@
 # 📚 MangaPark to MAL Exporter
 
+# ⚠️ THIS ONLY WORKS IF MANGAPARK'S SEVRERS ARE UP AND WORKING, WHENEVER MPRK. OFFICIALLY GOES DOWN THIS PROJECT WILL BE ARCHIVED AS I HAVE DECIDED NOT TO CONTINUE IT ON DIFFERENT PLATFORMS.
+
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/N3uralCreativity/MangaParkExporter-/releases)
 [![Python](https://img.shields.io/badge/python-3.11+-green)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
