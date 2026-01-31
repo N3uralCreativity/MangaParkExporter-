@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaPark to MAL Exporter - Export Your Manga Collection</title>
-    <meta name="description" content="A powerful desktop application to export your MangaPark follows to MyAnimeList with automatic MAL ID enrichment">
+    <title>MangaPark Exporter - Archived Project</title>
+    <meta name="description" content="MangaPark to MAL Exporter - This project has been archived and is no longer maintained.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,10 +16,10 @@
         }
 
         :root {
-            --primary: #667eea;
-            --primary-dark: #5568d3;
-            --secondary: #764ba2;
-            --accent: #f093fb;
+            --primary: #64748b;
+            --primary-dark: #475569;
+            --secondary: #6b7280;
+            --accent: #94a3b8;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
@@ -29,7 +29,7 @@
             --text: #f1f5f9;
             --text-muted: #94a3b8;
             --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            --archive-orange: #f97316;
         }
 
         html {
@@ -44,7 +44,7 @@
             line-height: 1.6;
         }
 
-        /* Animated Background */
+        /* Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -56,20 +56,11 @@
             background: var(--dark);
         }
 
-        #particles-canvas {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
         .gradient-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float-orb 20s ease-in-out infinite;
+            filter: blur(100px);
+            opacity: 0.15;
         }
 
         .orb-1 {
@@ -78,7 +69,6 @@
             background: radial-gradient(circle, var(--primary), transparent);
             top: 10%;
             left: 20%;
-            animation-delay: 0s;
         }
 
         .orb-2 {
@@ -87,23 +77,6 @@
             background: radial-gradient(circle, var(--secondary), transparent);
             top: 60%;
             right: 10%;
-            animation-delay: 5s;
-        }
-
-        .orb-3 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--accent), transparent);
-            bottom: 20%;
-            left: 50%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float-orb {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -50px) scale(1.1); }
-            50% { transform: translate(-30px, 30px) scale(0.9); }
-            75% { transform: translate(30px, 50px) scale(1.05); }
         }
 
         /* Navigation */
@@ -111,20 +84,15 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 1.5rem 0;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--dark-lighter);
         }
 
         .nav-container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
@@ -133,15 +101,23 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .archive-badge {
+            background: var(--archive-orange);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .nav-links {
@@ -155,26 +131,10 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient);
-            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
             color: var(--text);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
         }
 
         /* Hero Section */
@@ -188,55 +148,239 @@
         }
 
         .hero-content {
-            max-width: 1400px;
+            max-width: 900px;
             text-align: center;
-            animation: fadeInUp 1s ease;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Deprecation Banner */
+        .deprecation-banner {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(239, 68, 68, 0.15) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .deprecation-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .deprecation-icon {
+            font-size: 2.5rem;
+        }
+
+        .deprecation-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--archive-orange);
+        }
+
+        .deprecation-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .deprecation-text strong {
+            color: var(--text);
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 800;
             margin-bottom: 1.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
+            color: var(--text-muted);
+            line-height: 1.3;
         }
 
         .hero .subtitle {
-            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-size: 1.2rem;
             color: var(--text-muted);
-            margin-bottom: 3rem;
-            max-width: 800px;
+            margin-bottom: 2rem;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .cta-buttons {
+        .status-card {
+            background: var(--dark-light);
+            border: 1px solid var(--dark-lighter);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-dot.offline {
+            background: var(--error);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+
+        .status-dot.archived {
+            background: var(--archive-orange);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: var(--dark-light);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--dark-lighter);
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .info-card ul {
+            color: var(--text-muted);
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            line-height: 1.8;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
             display: flex;
             gap: 1.5rem;
+            padding-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% - 30px);
+            background: var(--dark-lighter);
+        }
+
+        .timeline-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--dark-lighter);
+            display: flex;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .timeline-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Archive Notice */
+        .archive-section {
+            background: var(--dark-light);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid var(--dark-lighter);
+            margin-top: 3rem;
+        }
+
+        .archive-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .archive-section p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
         }
 
         .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
+            padding: 0.9rem 2rem;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
@@ -245,330 +389,40 @@
             cursor: pointer;
         }
 
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--dark-lighter);
             color: var(--text);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--dark-lighter);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary);
-        }
-
-        /* Features Section */
-        .section {
-            padding: 8rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .section-title.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 4rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease 0.2s;
-        }
-
-        .section-subtitle.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: var(--dark-light);
-            padding: 2.5rem;
-            border-radius: 20px;
-            border: 1px solid var(--dark-lighter);
-            transition: all 0.4s ease;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .feature-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .feature-card:nth-child(2) .feature-icon { animation-delay: 0.5s; }
-        .feature-card:nth-child(3) .feature-icon { animation-delay: 1s; }
-        .feature-card:nth-child(4) .feature-icon { animation-delay: 1.5s; }
-        .feature-card:nth-child(5) .feature-icon { animation-delay: 2s; }
-        .feature-card:nth-child(6) .feature-icon { animation-delay: 2.5s; }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            line-height: 1.8;
-        }
-
-        /* How It Works */
-        .steps-container {
-            display: grid;
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .step {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 2rem;
-            align-items: center;
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.6s ease;
-        }
-
-        .step.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .step:nth-child(even) {
-            transform: translateX(50px);
-        }
-
-        .step:nth-child(even).visible {
-            transform: translateX(0);
-        }
-
-        .step-number {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 800;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .step-content {
-            background: var(--dark-light);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid var(--dark-lighter);
-        }
-
-        .step-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .step-content p {
-            color: var(--text-muted);
-            line-height: 1.8;
-        }
-
-        /* Stats Section */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 2rem;
-            background: var(--dark-light);
-            border-radius: 16px;
-            border: 1px solid var(--dark-lighter);
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.6s ease;
-        }
-
-        .stat-card.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* Download Section */
-        .download-section {
-            background: var(--dark-light);
-            border-radius: 30px;
-            padding: 4rem;
-            text-align: center;
-            border: 1px solid var(--dark-lighter);
-            margin-top: 4rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .download-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .download-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .download-section .version {
-            display: inline-block;
-            background: rgba(102, 126, 234, 0.2);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-bottom: 2rem;
-        }
-
-        .download-options {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .download-card {
             background: var(--dark);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid var(--dark-lighter);
-            flex: 1;
-            min-width: 280px;
-            max-width: 400px;
-            transition: all 0.3s ease;
-        }
-
-        .download-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .download-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .download-card .size {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
+            border-color: var(--text-muted);
         }
 
         /* Code Block */
-        .code-block {
+        .code-note {
             background: var(--dark);
             padding: 1.5rem;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid var(--dark-lighter);
-            margin: 2rem 0;
-            position: relative;
-            overflow-x: auto;
+            margin-top: 1.5rem;
+            text-align: left;
         }
 
-        .code-block code {
+        .code-note code {
             font-family: 'Fira Code', monospace;
-            color: var(--text);
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-
-        .code-block .copy-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: var(--text);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .code-block .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
         /* Footer */
         footer {
             background: var(--dark-light);
-            padding: 3rem 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
             border-top: 1px solid var(--dark-lighter);
+            margin-top: 4rem;
         }
 
         .footer-links {
@@ -583,48 +437,20 @@
             color: var(--text-muted);
             text-decoration: none;
             transition: color 0.3s ease;
+            font-size: 0.95rem;
         }
 
         .footer-links a:hover {
-            color: var(--primary);
+            color: var(--text);
         }
 
         .copyright {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gradient);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            opacity: 0;
-            transform: translateY(100px);
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            z-index: 999;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        .copyright .archived-text {
+            color: var(--archive-orange);
         }
 
         /* Responsive */
@@ -638,81 +464,42 @@
             }
 
             .section {
-                padding: 4rem 1rem;
+                padding: 3rem 1rem;
             }
 
-            .step {
-                grid-template-columns: 1fr;
-                text-align: center;
+            .deprecation-banner {
+                padding: 1.5rem;
             }
 
-            .step-number {
-                margin: 0 auto;
-            }
-
-            .download-section {
-                padding: 2rem;
-            }
-
-            .download-options {
+            .status-card {
                 flex-direction: column;
+                gap: 0.75rem;
+                padding: 1.25rem;
             }
-        }
 
-        /* Animations on scroll */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.6s ease;
-        }
-
-        .slide-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: all 0.6s ease;
-        }
-
-        .slide-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
+            .archive-section {
+                padding: 2rem 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
+    <!-- Background -->
     <div class="bg-animation">
-        <canvas id="particles-canvas"></canvas>
         <div class="gradient-orb orb-1"></div>
         <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
     </div>
 
     <!-- Navigation -->
-    <nav id="navbar">
+    <nav>
         <div class="nav-container">
             <div class="logo">
                 📚 MangaPark Exporter
+                <span class="archive-badge">Archived</span>
             </div>
             <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#download">Download</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#history">History</a></li>
                 <li><a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank">GitHub</a></li>
             </ul>
         </div>
@@ -721,218 +508,155 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Export Your MangaPark Collection to MyAnimeList</h1>
+            <!-- Deprecation Banner -->
+            <div class="deprecation-banner">
+                <div class="deprecation-header">
+                    <span class="deprecation-icon">📦</span>
+                    <span class="deprecation-title">Project Archived</span>
+                </div>
+                <p class="deprecation-text">
+                    <strong>This project has been deprecated and is no longer maintained.</strong><br><br>
+                    MangaPark's servers have been permanently shut down, making this exporter non-functional. 
+                    The repository remains available as a public archive for educational purposes and code reference only.
+                </p>
+            </div>
+
+            <h1>MangaPark to MAL Exporter</h1>
             <p class="subtitle">
-                Modern desktop application with beautiful themes, automatic MAL ID enrichment, 
-                HTML visualization, and seamless multi-format export
+                A desktop application that was designed to export manga collections from MangaPark 
+                to MyAnimeList with automatic MAL ID enrichment.
             </p>
-            <div class="cta-buttons">
-                <a href="#download" class="btn btn-primary">
-                    ⬇️ Download v2.0.0 (NEW!)
-                </a>
-                <a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank" class="btn btn-secondary">
-                    ⭐ View on GitHub
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- Features Section -->
-    <section id="features" class="section">
-        <h2 class="section-title fade-in">✨ Powerful Features</h2>
-        <p class="section-subtitle fade-in">Everything you need to manage your manga collection</p>
-
-        <div class="features-grid">
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🖥️</div>
-                <h3>Modern Desktop App</h3>
-                <p>
-                    <strong>PyQt6 + WebEngine:</strong> Native desktop application with embedded web UI<br>
-                    <strong>Full-Screen:</strong> Opens maximized for optimal workspace
-                </p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🎨</div>
-                <h3>2 Beautiful Themes</h3>
-                <p>
-                    Choose from Dark or Light theme with smooth animations 
-                    and customizable font sizes
-                </p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">📄</div>
-                <h3>Multiple Export Formats</h3>
-                <p>
-                    MAL XML for import, HTML preview for visualization, JSON for developers - 
-                    export all formats simultaneously
-                </p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🔗</div>
-                <h3>Smart MAL Matching</h3>
-                <p>
-                    Intelligent fuzzy matching with confidence scores, handles alternative titles, 
-                    improved MAL ID detection
-                </p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">📊</div>
-                <h3>Interactive Dashboard</h3>
-                <p>
-                    Real-time statistics, export history with search, step-by-step progress 
-                    indicators, quick actions
-                </p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">⚙️</div>
-                <h3>Extensive Settings</h3>
-                <p>
-                    Theme customization, animation speed control, font size adjustment, 
-                    export format selection, auto-open preview
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="section">
-        <h2 class="section-title fade-in">🚀 How It Works</h2>
-        <p class="section-subtitle fade-in">Get started in 4 simple steps</p>
-
-        <div class="steps-container">
-            <div class="step slide-in-left">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Download & Launch</h3>
-                    <p>
-                        Download the standalone .exe (no Python required) or run from source. 
-                        The application launches in fullscreen with an intuitive GUI.
-                    </p>
+            <div class="status-card">
+                <div class="status-item">
+                    <span class="status-dot offline"></span>
+                    <span>MangaPark Servers: <strong style="color: var(--error);">Offline</strong></span>
                 </div>
-            </div>
-
-            <div class="step slide-in-right">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Choose Mode & Configure</h3>
-                    <p>
-                        Select <strong>Authenticated</strong> mode (with MangaPark cookies) or 
-                        <strong>Public</strong> mode (no login). Follow the tutorial to extract 
-                        cookies from DevTools if needed.
-                    </p>
-                </div>
-            </div>
-
-            <div class="step slide-in-left">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Start Export Process</h3>
-                    <p>
-                        Click "Start Export" and watch real-time progress. The app scrapes 
-                        MangaPark, enriches with MAL IDs using Jikan API, and shows detailed logs.
-                    </p>
-                </div>
-            </div>
-
-            <div class="step slide-in-right">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>View & Import Results</h3>
-                    <p>
-                        Open the generated HTML to browse your collection or import the XML 
-                        file directly to MyAnimeList. All files saved in <code>output/</code> folder.
-                    </p>
+                <div class="status-item">
+                    <span class="status-dot archived"></span>
+                    <span>Project Status: <strong style="color: var(--archive-orange);">Archived</strong></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="section">
-        <h2 class="section-title fade-in">📊 Performance Stats</h2>
-        <p class="section-subtitle fade-in">Built for speed and reliability</p>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="section-title">About This Project</h2>
+        <p class="section-subtitle">What this application was designed to do</p>
 
-        <div class="stats-grid">
-            <div class="stat-card fade-in">
-                <div class="stat-number">85-95%</div>
-                <div class="stat-label">MAL ID Match Rate</div>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🎯 Purpose</h3>
+                <p>
+                    This application was built to help manga readers export their followed manga list 
+                    from MangaPark and convert it to a format compatible with MyAnimeList (MAL).
+                </p>
             </div>
 
-            <div class="stat-card fade-in">
-                <div class="stat-number">1/sec</div>
-                <div class="stat-label">API Rate Limit</div>
-            </div>
-
-            <div class="stat-card fade-in">
-                <div class="stat-number">30-80</div>
-                <div class="stat-label">Manga Per Page</div>
-            </div>
-
-            <div class="stat-card fade-in">
-                <div class="stat-number">20.9 MB</div>
-                <div class="stat-label">Executable Size</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section id="download" class="section">
-        <div class="download-section fade-in">
-            <h2>📥 Download MangaPark Exporter</h2>
-            <span class="version">Version 2.0.0 - November 28, 2025</span>
-
-            <div class="download-options">
-                <div class="download-card">
-                    <h3>💻 Windows Executable V2</h3>
-                    <p class="size">222 MB • Standalone Desktop App</p>
-                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-                        Complete rewrite with modern UI! PyQt6 desktop application with embedded web interface.
-                    </p>
-                    <a href="https://github.com/N3uralCreativity/MangaParkExporter-/releases/download/v2.0.0/MangaPark-Exporter-V2.exe" 
-                       class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        Download V2.exe (NEW!)
-                    </a>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
-                        ✅ Windows 10/11 (64-bit)<br>
-                        ✅ Chrome required<br>
-                        ✅ Full-screen desktop app<br>
-                        ✅ Modern themes & settings
-                    </p>
-                </div>
-
-                <div class="download-card">
-                    <h3>🐍 Run from Source</h3>
-                    <p class="size">Python 3.11+ Required</p>
-                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-                        For developers or Linux/Mac users
-                    </p>
-                    <div class="code-block" style="text-align: left;">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <code>git clone https://github.com/N3uralCreativity/MangaParkExporter-.git
-cd MangaParkExporter-
-pip install -r requirements.txt
-python src/desktop_app_v3.py</code>
-                    </div>
-                    <a href="https://github.com/N3uralCreativity/MangaParkExporter-" 
-                       target="_blank" class="btn btn-secondary" style="width: 100%; justify-content: center;">
-                        View on GitHub
-                    </a>
-                </div>
-            </div>
-
-            <div style="margin-top: 3rem; padding: 2rem; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
-                <h3 style="color: var(--error); margin-bottom: 1rem;">⚠️ Important Notes</h3>
-                <ul style="text-align: left; max-width: 600px; margin: 0 auto; color: var(--text-muted);">
-                    <li>Auto-fetch cookies feature disabled in .exe for stability</li>
-                    <li>Use manual DevTools method to extract cookies (100% reliable)</li>
-                    <li>Scraping takes 30-80 seconds per page due to JavaScript rendering</li>
-                    <li>Chrome or Edge browser must be installed</li>
+            <div class="info-card">
+                <h3>⚙️ Features</h3>
+                <ul>
+                    <li>Automated manga list extraction</li>
+                    <li>MAL ID enrichment via Jikan API</li>
+                    <li>XML export for MAL import</li>
+                    <li>HTML preview generation</li>
+                    <li>Modern PyQt6 desktop interface</li>
                 </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>🛠️ Technologies</h3>
+                <ul>
+                    <li>Python 3.11+</li>
+                    <li>PyQt6 / WebEngine</li>
+                    <li>Selenium WebDriver</li>
+                    <li>Jikan API (MAL wrapper)</li>
+                    <li>BeautifulSoup4</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>❌ Why Deprecated</h3>
+                <p>
+                    MangaPark's servers have been permanently shut down, rendering the scraping 
+                    functionality inoperable. Without access to the source data, the application 
+                    can no longer fulfill its intended purpose.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="section">
+        <h2 class="section-title">Project Timeline</h2>
+        <p class="section-subtitle">The journey of this project</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot">🚀</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">November 2024</div>
+                    <div class="timeline-title">Initial Release (v1.0)</div>
+                    <div class="timeline-text">First version with basic scraping and MAL XML export functionality.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">✨</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">November 2024</div>
+                    <div class="timeline-title">Version 2.0 - Modern UI</div>
+                    <div class="timeline-text">Complete rewrite with PyQt6 desktop application, themes, and improved matching algorithm.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">📖</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">December 2024</div>
+                    <div class="timeline-title">MangaDex Support (v2.5)</div>
+                    <div class="timeline-text">Added multi-site architecture with MangaDex integration.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">⚠️</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">January 2026</div>
+                    <div class="timeline-title">MangaPark Shutdown</div>
+                    <div class="timeline-text">MangaPark servers went permanently offline, breaking core functionality.</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot">📦</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">January 2026</div>
+                    <div class="timeline-title">Project Archived</div>
+                    <div class="timeline-text">Repository converted to public archive. No further development or support.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Archive Section -->
+    <section class="section">
+        <div class="archive-section">
+            <h2>📂 Source Code Archive</h2>
+            <p>
+                The complete source code remains available on GitHub for educational purposes, 
+                code reference, or as a starting point for similar projects targeting other platforms.
+            </p>
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank" class="btn btn-secondary">
+                View Repository on GitHub
+            </a>
+
+            <div class="code-note">
+                <code>
+                    ⚠️ Note: This project is archived and read-only.<br>
+                    No issues, pull requests, or updates will be accepted.
+                </code>
             </div>
         </div>
     </section>
@@ -940,220 +664,14 @@ python src/desktop_app_v3.py</code>
     <!-- Footer -->
     <footer>
         <div class="footer-links">
-            <a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank">GitHub</a>
-            <a href="https://github.com/N3uralCreativity/MangaParkExporter-/issues" target="_blank">Report Issue</a>
-            <a href="https://github.com/N3uralCreativity/MangaParkExporter-/blob/main/LICENSE" target="_blank">License</a>
-            <a href="https://github.com/N3uralCreativity/MangaParkExporter-#readme" target="_blank">Documentation</a>
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-" target="_blank">GitHub Repository</a>
+            <a href="https://github.com/N3uralCreativity/MangaParkExporter-/blob/main/LICENSE" target="_blank">MIT License</a>
+            <a href="https://github.com/N3uralCreativity" target="_blank">Developer</a>
         </div>
         <p class="copyright">
-            © 2025 MangaPark to MAL Exporter • Made with ❤️ by N3uralCreativity • MIT License
+            © 2024-2026 MangaPark Exporter • Created by N3uralCreativity<br>
+            <span class="archived-text">This project has been archived and is no longer maintained.</span>
         </p>
     </footer>
-
-    <!-- Scroll to top button -->
-    <button class="scroll-top" onclick="scrollToTop()">↑</button>
-
-    <script>
-        // Particle System
-        class ParticleSystem {
-            constructor() {
-                this.canvas = document.getElementById('particles-canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.particles = [];
-                this.particleCount = 80;
-                this.connectionDistance = 150;
-                this.mouse = { x: null, y: null, radius: 150 };
-                
-                this.init();
-                this.animate();
-                this.setupEventListeners();
-            }
-
-            init() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-
-                for (let i = 0; i < this.particleCount; i++) {
-                    this.particles.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height,
-                        vx: (Math.random() - 0.5) * 0.5,
-                        vy: (Math.random() - 0.5) * 0.5,
-                        size: Math.random() * 2 + 1,
-                        opacity: Math.random() * 0.5 + 0.3
-                    });
-                }
-            }
-
-            setupEventListeners() {
-                window.addEventListener('resize', () => {
-                    this.canvas.width = window.innerWidth;
-                    this.canvas.height = window.innerHeight;
-                });
-
-                window.addEventListener('mousemove', (e) => {
-                    this.mouse.x = e.x;
-                    this.mouse.y = e.y;
-                });
-
-                window.addEventListener('mouseout', () => {
-                    this.mouse.x = null;
-                    this.mouse.y = null;
-                });
-            }
-
-            drawParticle(particle) {
-                this.ctx.beginPath();
-                this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                this.ctx.fillStyle = `rgba(102, 126, 234, ${particle.opacity})`;
-                this.ctx.fill();
-            }
-
-            connectParticles() {
-                for (let i = 0; i < this.particles.length; i++) {
-                    for (let j = i + 1; j < this.particles.length; j++) {
-                        const dx = this.particles[i].x - this.particles[j].x;
-                        const dy = this.particles[i].y - this.particles[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < this.connectionDistance) {
-                            const opacity = (1 - distance / this.connectionDistance) * 0.2;
-                            this.ctx.beginPath();
-                            this.ctx.strokeStyle = `rgba(102, 126, 234, ${opacity})`;
-                            this.ctx.lineWidth = 0.5;
-                            this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
-                            this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
-                            this.ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            updateParticles() {
-                this.particles.forEach(particle => {
-                    particle.x += particle.vx;
-                    particle.y += particle.vy;
-
-                    // Mouse interaction
-                    if (this.mouse.x != null && this.mouse.y != null) {
-                        const dx = this.mouse.x - particle.x;
-                        const dy = this.mouse.y - particle.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < this.mouse.radius) {
-                            const force = (this.mouse.radius - distance) / this.mouse.radius;
-                            const directionX = dx / distance;
-                            const directionY = dy / distance;
-                            particle.x -= directionX * force * 2;
-                            particle.y -= directionY * force * 2;
-                        }
-                    }
-
-                    // Bounce off edges
-                    if (particle.x < 0 || particle.x > this.canvas.width) {
-                        particle.vx *= -1;
-                        particle.x = Math.max(0, Math.min(this.canvas.width, particle.x));
-                    }
-                    if (particle.y < 0 || particle.y > this.canvas.height) {
-                        particle.vy *= -1;
-                        particle.y = Math.max(0, Math.min(this.canvas.height, particle.y));
-                    }
-                });
-            }
-
-            animate() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                this.connectParticles();
-                this.particles.forEach(particle => this.drawParticle(particle));
-                this.updateParticles();
-
-                requestAnimationFrame(() => this.animate());
-            }
-        }
-
-        // Initialize particle system
-        new ParticleSystem();
-
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Scroll to top button
-        const scrollTopBtn = document.querySelector('.scroll-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all animated elements
-        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .feature-card, .step, .stat-card, .download-section, .section-title, .section-subtitle').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Copy code function
-        function copyCode(button) {
-            const codeBlock = button.parentElement;
-            const code = codeBlock.querySelector('code').textContent;
-            
-            navigator.clipboard.writeText(code).then(() => {
-                button.textContent = '✓ Copied!';
-                button.style.background = 'rgba(16, 185, 129, 0.3)';
-                
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                    button.style.background = 'rgba(255, 255, 255, 0.1)';
-                }, 2000);
-            });
-        }
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Add stagger animation delay to feature cards
-        document.querySelectorAll('.feature-card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.1}s`;
-        });
-
-        // Add stagger animation delay to stat cards
-        document.querySelectorAll('.stat-card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.1}s`;
-        });
-    </script>
 </body>
 </html>
